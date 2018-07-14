@@ -37,6 +37,11 @@ group :development, :test do
   gem 'rspec-rails'
   # Use Factory Bot for generating random test data
   gem 'factory_bot_rails'
+  # Use Should Matchers for testing helpers
+  gem 'shoulda-matchers', '~> 3.1'
+  # Strategies for cleaning your database
+  gem 'database_cleaner'
+  gem 'faker'
 end
 
 group :development do
