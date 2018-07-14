@@ -23,7 +23,7 @@ require 'rails_helper'
 # removed from Rails core in Rails 5, but can be added back in via the
 # `rails-controller-testing` gem.
 
-RSpec.describe UsersController, type: :controller do
+RSpec.describe V1::UsersController, type: :controller do
 
   # This should return the minimal set of attributes required to create a valid
   # User. As you add validations to User, be sure to
