@@ -21,7 +21,6 @@ module V1
       if @user.save
         render json: @user, status: :created
       else
-
         render json: @user, status: :unprocessable_entity, serializer: ActiveModel::Serializer::ErrorSerializer
       end
     end
@@ -41,16 +40,17 @@ module V1
     end
 
     private
-      # Use callbacks to share common setup or constraints between actions.
-      def set_user
-        @user = User.find(params[:id])
-      end
 
-      # Only allow a trusted parameter "white list" through.
-      def user_params
-        params.require(:data)
-          .require(:attributes)
-          .permit(:name, :email)
-      end
+    # Use callbacks to share common setup or constraints between actions.
+    def set_user
+      @user = User.find(params[:id])
+    end
+
+    # Only allow a trusted parameter "white list" through.
+    def user_params
+      params.require(:data)
+        .require(:attributes)
+        .permit(:name, :email, :password)
+    end
   end
 end
