@@ -43,6 +43,7 @@ group :development, :test do
   # Strategies for cleaning your database
   gem 'database_cleaner'
   gem 'faker'
+  gem 'dotenv-rails'
 end
 
 group :development do
