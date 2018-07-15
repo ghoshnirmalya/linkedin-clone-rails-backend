@@ -50,7 +50,7 @@ module V1
       def user_params
         params.require(:data)
           .require(:attributes)
-          .permit(:name)
+          .permit(:name, :email)
       end
   end
 end

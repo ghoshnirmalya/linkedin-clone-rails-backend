@@ -31,7 +31,8 @@ RSpec.describe V1::UsersController, type: :controller do
   let(:valid_attributes) {
     {
       attributes: {
-        name: "John Doe"
+        name: "John Doe",
+        email: "john@doe.com"
       }
     }
   }
@@ -39,7 +40,8 @@ RSpec.describe V1::UsersController, type: :controller do
   let(:invalid_attributes) {
     {
       attributes: {
-        name: ""
+        name: "",
+        email: ""
       }
     }
   }
