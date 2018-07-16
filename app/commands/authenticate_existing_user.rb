@@ -8,7 +8,7 @@ class AuthenticateExistingUser
 
   def call
     if authenticate_existing_user
-      JsonWebToken.encode(user_id: user.id)
+      JsonWebToken.encode(user_id: @user.id)
     end
   end
 
@@ -17,10 +17,10 @@ class AuthenticateExistingUser
   attr_accessor :email, :password
 
   def authenticate_existing_user
-    user = User.find_by_email(email)
+    @user = User.find_by_email(email)
 
-    if user && user.authenticate(password)
-      user
+    if @user && @user.authenticate(password)
+      @user
     else
       errors.add :user_authentication, "invalid credentials"
       nil
