@@ -1,6 +1,7 @@
 # API to power a software similar to LinkedIn
 
 [![Build Status](https://travis-ci.org/ghoshnirmalya/linkedin-rails.svg?branch=master)](https://travis-ci.org/ghoshnirmalya/linkedin-rails)
+[![Maintainability](https://api.codeclimate.com/v1/badges/44ac5eaed20a31c9b97c/maintainability)](https://codeclimate.com/github/ghoshnirmalya/linkedin-rails/maintainability)
 
 A clone of LinkedIn software with basic functionalities.
 
@@ -20,7 +21,8 @@ What things you need to install the software and how to install them:
 2.  Build the project: `docker-compose run linkedin.rails rails new . --api --force --database=postgresql --T`
 3.  Rebuild the project: `docker-compose build`
 4.  Create the database: `docker-compose run linkedin.rails rake db:create`
-5.  Run the migrations: `docker-compose run linkedin.rails rake db:migrate`
+5.  Copy the env files: `cp .env.development.example .env.development && cp .env.test.example .env.test`
+6.  Run the migrations: `docker-compose run linkedin.rails rake db:migrate`
 
 Please have a look at [Quickstart: Compose and Rails](https://docs.docker.com/compose/rails/) if you run into any trouble while installing.
 
