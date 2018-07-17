@@ -96,7 +96,7 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 - [x] Authentication
 - [x] Make APIs follow JSON-API specification
 - [x] Users Listing API
-- [ ] Companies Listing API
+- [x] Companies Listing API
 - [ ] Job Listing API
 - [ ] User Profile
 - [ ] Company Profile
