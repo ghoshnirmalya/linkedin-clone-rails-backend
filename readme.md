@@ -107,7 +107,3 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 - [ ] Blogs
 - [ ] Stats about your profile views
 - [ ] Stats about your article views
-
-```
-
-```
