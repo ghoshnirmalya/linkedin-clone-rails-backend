@@ -17,12 +17,41 @@ What things you need to install the software and how to install them:
 
 ### Installing
 
-1.  Clone the repository: `git clone git@github.com:ghoshnirmalya/linkedin-rails.git && cd linked-rails`
-2.  Build the project: `docker-compose run linkedin.rails rails new . --api --force --database=postgresql --T`
-3.  Rebuild the project: `docker-compose build`
-4.  Create the database: `docker-compose run linkedin.rails rake db:create`
-5.  Copy the env files: `cp .env.development.example .env.development && cp .env.test.example .env.test`
-6.  Run the migrations: `docker-compose run linkedin.rails rake db:migrate`
+#### 1. Clone the repository
+
+```
+git clone git@github.com:ghoshnirmalya/linkedin-rails.git && cd linked-rails
+```
+
+#### 2. Build the project
+
+```
+docker-compose run linkedin.rails rails new . --api --force --database=postgresql --T
+```
+
+#### 3. Rebuild the project
+
+```
+docker-compose build
+```
+
+#### 4. Create the database
+
+```
+docker-compose run linkedin.rails rake db:create
+```
+
+#### 5. Copy the env files
+
+```
+cp .env.development.example .env.development && cp .env.test.example .env.test
+```
+
+#### 6. Run the migrations
+
+```
+docker-compose run linkedin.rails rake db:migrate
+```
 
 Please have a look at [Quickstart: Compose and Rails](https://docs.docker.com/compose/rails/) if you run into any trouble while installing.
 
@@ -44,6 +73,7 @@ docker exec -it linkedin-rails_linkedin.rails.web_1 rspec spec/controllers/v1/us
 
 - [Ruby on Rails](https://rubyonrails.org/) - The web framework used to build the app
 - [Docker](https://www.docker.com/) - Used to containerize the app
+- [Postgresql](https://www.postgresql.org/) - The database used to store the data
 
 ## Contributing
 
@@ -77,3 +107,7 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 - [ ] Blogs
 - [ ] Stats about your profile views
 - [ ] Stats about your article views
+
+```
+
+```
