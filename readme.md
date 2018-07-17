@@ -26,28 +26,22 @@ git clone git@github.com:ghoshnirmalya/linkedin-rails.git && cd linked-rails
 #### 2. Build the project
 
 ```
-docker-compose run linkedin.rails rails new . --api --force --database=postgresql --T
-```
-
-#### 3. Rebuild the project
-
-```
 docker-compose build
 ```
 
-#### 4. Create the database
+#### 3. Create the database
 
 ```
 docker-compose run linkedin.rails rake db:create
 ```
 
-#### 5. Copy the env files
+#### 4. Copy the env files
 
 ```
 cp .env.development.example .env.development && cp .env.test.example .env.test
 ```
 
-#### 6. Run the migrations
+#### 5. Run the migrations
 
 ```
 docker-compose run linkedin.rails rake db:migrate
