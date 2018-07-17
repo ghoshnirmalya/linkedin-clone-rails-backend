@@ -81,6 +81,8 @@ RSpec.describe V1::UsersController, type: :controller do
         {
           attributes: {
             name: "Jane Doe",
+            email: "jane@doe.com",
+            password: "password",
           },
         }
       }
@@ -90,11 +92,11 @@ RSpec.describe V1::UsersController, type: :controller do
 
         request.headers["HTTP_AUTHORIZATION"] = authorization_header(user)
 
-        put :update, params: {id: user.to_param, data: valid_attributes}
+        put :update, params: {id: user.to_param, data: new_attributes}
 
         user.reload
 
-        expect(user.name).to eq("John Doe")
+        expect(user.name).to eq("Jane Doe")
       end
 
       it "renders a JSON response with the user" do
@@ -102,7 +104,7 @@ RSpec.describe V1::UsersController, type: :controller do
 
         request.headers["HTTP_AUTHORIZATION"] = authorization_header(user)
 
-        put :update, params: {id: user.to_param, data: valid_attributes}
+        put :update, params: {id: user.to_param, data: new_attributes}
 
         expect(response).to have_http_status(:ok)
         expect(response.content_type).to eq("application/vnd.api+json")
