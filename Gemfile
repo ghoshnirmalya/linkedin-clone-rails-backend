@@ -17,7 +17,9 @@ gem 'active_model_serializers', '~> 0.10.0'
 # gem 'redis', '~> 4.0'
 # Use ActiveModel has_secure_password
 gem 'bcrypt', '~> 3.1.7'
+# Use JWT to generate OAuth JSON Web Token
 gem 'jwt'
+# Use SimpleCommand to build and use Service Objects
 gem 'simple_command'
 # Use ActiveStorage variant
 # gem 'mini_magick', '~> 4.8'
@@ -42,7 +44,9 @@ group :development, :test do
   gem 'shoulda-matchers', '~> 3.1'
   # Strategies for cleaning your database
   gem 'database_cleaner'
+  # Use Faker to generate fake data for tests
   gem 'faker'
+  # Use dotenv to load environment variables from `.env`
   gem 'dotenv-rails'
 end
 
@@ -53,6 +57,10 @@ group :development do
   gem 'spring-watcher-listen', '~> 2.0.0'
 end
 
+group :test do
+  # Use SimpleCov for obtaining test coverage reports
+  gem 'simplecov'
+end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
