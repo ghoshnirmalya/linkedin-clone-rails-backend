@@ -63,9 +63,9 @@ RSpec.describe V1::UsersController, type: :controller do
     end
 
     it "returns a list of 10 users" do
-      user = FactoryBot.create_list(:user, 100)
+      users = FactoryBot.create_list(:user, 100)
 
-      request.headers["HTTP_AUTHORIZATION"] = authorization_header(user.first)
+      request.headers["HTTP_AUTHORIZATION"] = authorization_header(users.first)
 
       get :index, {format: :json}
 
@@ -73,9 +73,9 @@ RSpec.describe V1::UsersController, type: :controller do
     end
 
     it "returns a link object" do
-      user = FactoryBot.create_list(:user, 100)
+      users = FactoryBot.create_list(:user, 100)
 
-      request.headers["HTTP_AUTHORIZATION"] = authorization_header(user.first)
+      request.headers["HTTP_AUTHORIZATION"] = authorization_header(users.first)
 
       get :index, {format: :json}
 
@@ -83,9 +83,9 @@ RSpec.describe V1::UsersController, type: :controller do
     end
 
     it "data of two pages shouldn't be same" do
-      user = FactoryBot.create_list(:user, 100)
+      users = FactoryBot.create_list(:user, 100)
 
-      request.headers["HTTP_AUTHORIZATION"] = authorization_header(user.first)
+      request.headers["HTTP_AUTHORIZATION"] = authorization_header(users.first)
 
       get :index, {format: :json, params: {page: 1}}
 
