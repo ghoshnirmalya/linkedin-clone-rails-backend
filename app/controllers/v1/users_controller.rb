@@ -4,7 +4,7 @@ module V1
 
     # GET /users
     def index
-      @users = User.all
+      @users = User.page(params[:page])
 
       render json: @users
     end

@@ -21,6 +21,8 @@ gem 'bcrypt', '~> 3.1.7'
 gem 'jwt'
 # Use SimpleCommand to build and use Service Objects
 gem 'simple_command'
+# Generate pagination for resources
+gem 'will_paginate'
 # Use ActiveStorage variant
 # gem 'mini_magick', '~> 4.8'
 

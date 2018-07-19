@@ -4,7 +4,7 @@ module V1
 
     # GET /jobs
     def index
-      @jobs = Job.all
+      @jobs = Job.page(params[:page])
 
       render json: @jobs
     end

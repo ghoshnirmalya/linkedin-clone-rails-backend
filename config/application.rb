@@ -31,6 +31,9 @@ module App
     # Middleware like session, flash, cookies can be added back manually.
     # Skip views, helpers and assets when generating a new resource.
     config.api_only = true
+    # Autoload lib folder
     config.autoload_paths << Rails.root.join("lib")
+    # Set per_page globally for pagination
+    WillPaginate.per_page = 10
   end
 end
