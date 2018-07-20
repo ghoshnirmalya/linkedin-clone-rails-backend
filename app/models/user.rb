@@ -5,4 +5,12 @@ class User < ApplicationRecord
   has_and_belongs_to_many :companies
 
   has_secure_password
+
+  def self.search(search)
+    if search.blank? # blank? covers both nil and empty string
+      all
+    else
+      where("lower(name) LIKE ?", "%#{search.downcase}%")
+    end
+  end
 end
