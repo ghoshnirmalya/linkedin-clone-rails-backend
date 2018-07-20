@@ -59,15 +59,52 @@ RSpec.describe V1::CompaniesController, type: :controller do
       expect(response).to be_successful
     end
 
-    it "returns a list of 10 companies" do
-      user = FactoryBot.create(:user)
-      companies = FactoryBot.create_list(:company, 100)
+    context "without search params" do
+      it "returns a list of 10 companies" do
+        user = FactoryBot.create(:user)
+        companies = FactoryBot.create_list(:company, 100)
 
-      request.headers["HTTP_AUTHORIZATION"] = authorization_header(user)
+        request.headers["HTTP_AUTHORIZATION"] = authorization_header(user)
 
-      get :index, {format: :json}
+        get :index, {format: :json}
 
-      expect(JSON.parse(response.body)["data"].count).to eq(10)
+        expect(JSON.parse(response.body)["data"].count).to eq(10)
+      end
+    end
+
+    context "with search params" do
+      it "returns a list of lesser than or equals to 10 companies" do
+        user = FactoryBot.create(:user)
+        companies = FactoryBot.create_list(:company, 100)
+
+        request.headers["HTTP_AUTHORIZATION"] = authorization_header(user)
+
+        get :index, {format: :json, params: {search: "a"}}
+
+        expect(JSON.parse(response.body)["data"].count).to be <= 10
+      end
+
+      it "returns a list of 10 companies" do
+        user = FactoryBot.create(:user)
+        companies = FactoryBot.create_list(:company, 100, name: "Company A")
+
+        request.headers["HTTP_AUTHORIZATION"] = authorization_header(user)
+
+        get :index, {format: :json, params: {search: "Company A"}}
+
+        expect(JSON.parse(response.body)["data"].count).to eq(10)
+      end
+
+      it "returns a list of 0 companies" do
+        user = FactoryBot.create(:user)
+        companies = FactoryBot.create_list(:company, 100, name: "Company B")
+
+        request.headers["HTTP_AUTHORIZATION"] = authorization_header(user)
+
+        get :index, {format: :json, params: {search: "Company A"}}
+
+        expect(JSON.parse(response.body)["data"].count).to eq(0)
+      end
     end
 
     it "returns a link object" do

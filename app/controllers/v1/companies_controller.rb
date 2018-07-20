@@ -4,7 +4,7 @@ module V1
 
     # GET /companies
     def index
-      @companies = Company.page(params[:page])
+      @companies = Company.search(params[:search]).page(params[:page])
 
       render json: @companies
     end
