@@ -85,18 +85,18 @@ RSpec.describe V1::UsersController, type: :controller do
         expect(JSON.parse(response.body)["data"].count).to be <= 10
       end
 
-      it "returns a list of 5 users" do
-        users = FactoryBot.create_list(:user, 5, name: "John Doe")
+      it "returns a list of 10 users" do
+        users = FactoryBot.create_list(:user, 100, name: "John Doe")
 
         request.headers["HTTP_AUTHORIZATION"] = authorization_header(users.first)
 
         get :index, {format: :json, params: {search: "John"}}
 
-        expect(JSON.parse(response.body)["data"].count).to eq(5)
+        expect(JSON.parse(response.body)["data"].count).to eq(10)
       end
 
       it "returns a list of 0 users" do
-        users = FactoryBot.create_list(:user, 5, name: "John Doe")
+        users = FactoryBot.create_list(:user, 100, name: "John Doe")
 
         request.headers["HTTP_AUTHORIZATION"] = authorization_header(users.first)
 
