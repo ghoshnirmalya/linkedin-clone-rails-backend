@@ -143,6 +143,30 @@ RSpec.describe V1::UsersController, type: :controller do
 
       expect(response).to be_successful
     end
+
+    context "when id is current" do
+      it "returns the current user from the token" do
+        user = FactoryBot.create_list(:user, 100)
+
+        request.headers["HTTP_AUTHORIZATION"] = authorization_header(user.first)
+
+        get :show, params: {id: "current"}
+
+        expect(JSON.parse(response.body)["data"]["id"].to_i).to eq((JSON.parse(user.first.to_json)["id"]))
+      end
+    end
+
+    context "when id is not current" do
+      it "returns the user based on params[:id]" do
+        user = FactoryBot.create_list(:user, 100)
+
+        request.headers["HTTP_AUTHORIZATION"] = authorization_header(user.first)
+
+        get :show, params: {id: user.last}
+
+        expect(JSON.parse(response.body)["data"]["id"].to_i).to eq((JSON.parse(user.last.to_json)["id"]))
+      end
+    end
   end
 
   describe "PUT #update" do
