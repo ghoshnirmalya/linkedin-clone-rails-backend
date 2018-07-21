@@ -52,299 +52,139 @@ RSpec.describe V1::MessagesController, type: :controller do
       expect(response).to be_successful
     end
 
-    # it "returns a list of 10 messages" do
-    #   user = FactoryBot.create(:user)
-    #   messages = FactoryBot.create_list(:message, 100)
+    it "returns a link object" do
+      user = FactoryBot.create(:user)
+      conversation = FactoryBot.create(:conversation)
+      messages = FactoryBot.create_list(:message, 100, conversation_id: conversation.id)
 
-    #   request.headers["HTTP_AUTHORIZATION"] = authorization_header(user)
+      request.headers["HTTP_AUTHORIZATION"] = authorization_header(user)
 
-    #   get :index, {format: :json}
+      get :index, {format: :json, params: {conversation_id: conversation.id}}
 
-    #   expect(JSON.parse(response.body)["data"].count).to eq(10)
-    # end
+      expect(JSON.parse(response.body)["links"]).to be_present
+    end
 
-    # context "without search params" do
-    #   it "returns a list of 10 messages" do
-    #     user = FactoryBot.create(:user)
-    #     messages = FactoryBot.create_list(:message, 100)
+    it "data of two pages shouldn't be same" do
+      user = FactoryBot.create(:user)
+      conversation = FactoryBot.create(:conversation)
+      messages = FactoryBot.create_list(:message, 100, conversation_id: conversation.id)
 
-    #     request.headers["HTTP_AUTHORIZATION"] = authorization_header(user)
+      request.headers["HTTP_AUTHORIZATION"] = authorization_header(user)
 
-    #     get :index, {format: :json}
+      get :index, {format: :json, params: {conversation_id: conversation.id, page: 1}}
 
-    #     expect(JSON.parse(response.body)["data"].count).to eq(10)
-    #   end
-    # end
+      response_first = response
 
-    #   context "with search params" do
-    #     it "returns a list of lesser than or equals to 10 messages" do
-    #       user = FactoryBot.create(:user)
-    #       messages = FactoryBot.create_list(:message, 100)
+      get :index, {format: :json, params: {conversation_id: conversation.id, page: 2}}
 
-    #       request.headers["HTTP_AUTHORIZATION"] = authorization_header(user)
+      response_second = response
 
-    #       get :index, {format: :json, params: {search: "a"}}
+      expect(JSON.parse(response_first.body)["links"]).to_not eq(JSON.parse(response_second.body)["links"])
+    end
 
-    #       expect(JSON.parse(response.body)["data"].count).to be <= 10
-    #     end
+    it "throws 401 if Authorization header isn't passed" do
+      get :index, {format: :json}
 
-    #     it "returns a list of 10 messages" do
-    #       user = FactoryBot.create(:user)
-    #       messages = FactoryBot.create_list(:message, 100, body: "Some random message body")
+      expect(response).to have_http_status(:unauthorized)
+    end
 
-    #       request.headers["HTTP_AUTHORIZATION"] = authorization_header(user)
+    it "returns a list of 10 messages" do
+      user = FactoryBot.create(:user)
+      conversation = FactoryBot.create(:conversation)
+      messages = FactoryBot.create_list(:message, 100, conversation_id: conversation.id)
 
-    #       get :index, {format: :json, params: {search: "Some random message body"}}
+      request.headers["HTTP_AUTHORIZATION"] = authorization_header(user)
 
-    #       expect(JSON.parse(response.body)["data"].count).to eq(10)
-    #     end
+      get :index, {format: :json, params: {conversation_id: conversation.id}}
 
-    #     it "returns a list of 0 messages" do
-    #       user = FactoryBot.create(:user)
-    #       messages = FactoryBot.create_list(:message, 100, body: "Somthing random")
+      expect(JSON.parse(response.body)["data"].count).to eq(10)
+    end
 
-    #       request.headers["HTTP_AUTHORIZATION"] = authorization_header(user)
+    context "without search params" do
+      it "returns a list of 10 messages" do
+        user = FactoryBot.create(:user)
+        conversation = FactoryBot.create(:conversation)
+        messages = FactoryBot.create_list(:message, 100, conversation_id: conversation.id)
 
-    #       get :index, {format: :json, params: {search: "Some random message body"}}
+        request.headers["HTTP_AUTHORIZATION"] = authorization_header(user)
 
-    #       expect(JSON.parse(response.body)["data"].count).to eq(0)
-    #     end
-    #   end
+        get :index, {format: :json, params: {conversation_id: conversation.id}}
 
-    #   it "returns a link object" do
-    #     user = FactoryBot.create(:user)
-    #     messages = FactoryBot.create_list(:message, 100)
+        expect(JSON.parse(response.body)["data"].count).to eq(10)
+      end
+    end
 
-    #     request.headers["HTTP_AUTHORIZATION"] = authorization_header(user)
+    describe "POST #create" do
+      context "with valid params" do
+        it "creates a new message" do
+          user = FactoryBot.create(:user)
+          conversation = FactoryBot.create(:conversation)
 
-    #     get :index, {format: :json}
+          request.headers["HTTP_AUTHORIZATION"] = authorization_header(user)
 
-    #     expect(JSON.parse(response.body)["links"]).to be_present
-    #   end
+          post :create, params: {data: {
+                          attributes: {
+                            body: "Some random message body",
+                            conversation_id: conversation.id,
+                            user_id: user.id,
+                          },
+                        }}
 
-    #   it "data of two pages shouldn't be same" do
-    #     user = FactoryBot.create(:user)
-    #     messages = FactoryBot.create_list(:message, 100)
+          expect(Message.count).to eq(1)
+        end
 
-    #     request.headers["HTTP_AUTHORIZATION"] = authorization_header(user)
+        it "renders a JSON response with the new message" do
+          user = FactoryBot.create(:user)
+          conversation = FactoryBot.create(:conversation)
 
-    #     get :index, {format: :json, params: {page: 1}}
+          request.headers["HTTP_AUTHORIZATION"] = authorization_header(user)
 
-    #     response_first = response
+          post :create, params: {data: {
+                          attributes: {
+                            body: "Some random message body",
+                            conversation_id: conversation.id,
+                            user_id: user.id,
+                          },
+                        }}
 
-    #     get :index, {format: :json, params: {page: 2}}
+          expect(response).to have_http_status(:created)
+          expect(response.content_type).to eq("application/vnd.api+json")
+        end
 
-    #     response_second = response
-
-    #     expect(JSON.parse(response_first.body)["links"]).to_not eq(JSON.parse(response_second.body)["links"])
-    #   end
-
-    #   it "throws 401 if Authorization header isn't passed" do
-    #     get :index, {format: :json}
-
-    #     expect(response).to have_http_status(:unauthorized)
-    #   end
-    # end
-
-    # describe "GET #show" do
-    #   it "returns a success response" do
-    #     user = FactoryBot.create(:user)
-    #     message = FactoryBot.create(:message)
-
-    #     request.headers["HTTP_AUTHORIZATION"] = authorization_header(user)
-
-    #     get :show, params: {id: message.to_param}
-
-    #     expect(response).to be_successful
-    #   end
-
-    #   it "throws 401 if Authorization header isn't passed" do
-    #     message = FactoryBot.create(:message)
-
-    #     get :show, params: {id: message.to_param}
-
-    #     expect(response).to have_http_status(:unauthorized)
-    #   end
-    # end
-
-    # describe "PUT #update" do
-    #   context "with valid params" do
-    #     it "updates the requested message" do
-    #       user = FactoryBot.create(:user)
-    #       conversation = FactoryBot.create(:conversation)
-    #       message = FactoryBot.create(:message)
-
-    #       request.headers["HTTP_AUTHORIZATION"] = authorization_header(user)
-
-    #       put :update, params: {id: message.to_param, data: {
-    #                      attributes: {
-    #                        body: "Some random message body",
-    #                        conversation_id: conversation.id,
-    #                        user_id: user.id,
-    #                      },
-    #                    }}
-
-    #       message.reload
-
-    #       expect(message.body).to eq("Some random message body")
-    #       expect(message.company).to eq(company)
-    #     end
-
-    #     it "renders a JSON response with the message" do
-    #       user = FactoryBot.create(:user)
-    #       conversation = FactoryBot.create(:conversation)
-    #       message = FactoryBot.create(:message)
-
-    #       request.headers["HTTP_AUTHORIZATION"] = authorization_header(user)
-
-    #       put :update, params: {id: message.to_param, data: {
-    #                      attributes: {
-    #                        body: "Some random message body",
-    #                        conversation_id: conversation.id,
-    #                        user_id: user.id,
-    #                      },
-    #                    }}
-
-    #       expect(response).to have_http_status(:ok)
-    #       expect(response.content_type).to eq("application/vnd.api+json")
-    #     end
-
-    #     it "throws 401 if Authorization header isn't passed" do
-    #       message = FactoryBot.create(:message)
-    #       company = FactoryBot.create(:company)
-
-    #       put :update, params: {id: message.to_param, data: {
-    #                      attributes: {
-    #                        body: "Some random message body",
-    #                        company_id: company.id,
-    #                        user_id: user.id,
-    #                      },
-    #                    }}
-
-    #       expect(response).to have_http_status(:unauthorized)
-    #     end
-    #   end
-
-    #   context "with invalid params" do
-    #     it "renders a JSON response with errors for the message" do
-    #       user = FactoryBot.create(:user)
-    #       message = FactoryBot.create(:message)
-
-    #       request.headers["HTTP_AUTHORIZATION"] = authorization_header(user)
-
-    #       put :update, params: {id: message.to_param, data: invalid_attributes}
-
-    #       expect(response).to have_http_status(:unprocessable_entity)
-    #       expect(response.content_type).to eq("application/vnd.api+json")
-    #     end
-
-    #     it "throws 401 if Authorization header isn't passed" do
-    #       message = FactoryBot.create(:message)
-
-    #       put :update, params: {id: message.to_param, data: invalid_attributes}
-
-    #       expect(response).to have_http_status(:unauthorized)
-    #     end
-    #   end
-    # end
-
-    # describe "DELETE #destroy" do
-    #   it "destroys the requested message" do
-    #     user = FactoryBot.create(:user)
-    #     message = FactoryBot.create(:message)
-
-    #     request.headers["HTTP_AUTHORIZATION"] = authorization_header(user)
-
-    #     expect {
-    #       delete :destroy, {format: :json, params: {id: message.to_param}}
-    #     }.to change(message, :count).by(-1)
-    #   end
-
-    #   it "throws 401 if Authorization header isn't passed" do
-    #     message = FactoryBot.create(:message)
-
-    #     delete :destroy, params: {id: message.to_param}
-
-    #     expect(response).to have_http_status(:unauthorized)
-    #   end
-    # end
-
-    # describe "POST #create" do
-    #   context "with valid params" do
-    #     it "creates a new message" do
-    #       user = FactoryBot.create(:user)
-    #       company = FactoryBot.create(:company)
-
-    #       request.headers["HTTP_AUTHORIZATION"] = authorization_header(user)
-
-    #       post :create, params: {data: {
-    #                       attributes: {
-    #                         body: "Some random message body",
-    #                         company_id: company.id,
-    #                         user_id: user.id,
-    #                       },
-    #                     }}
-
-    #       expect(Company.count).to eq(1)
-    #     end
-
-    #     it "renders a JSON response with the new message" do
-    #       user = FactoryBot.create(:user)
-    #       company = FactoryBot.create(:company)
-
-    #       request.headers["HTTP_AUTHORIZATION"] = authorization_header(user)
-
-    #       post :create, params: {data: {
-    #                       attributes: {
-    #                         body: "Some random message body",
-    #                         company_id: company.id,
-    #                         user_id: user.id,
-    #                       },
-    #                     }}
-
-    #       expect(response).to have_http_status(:created)
-    #       expect(response.content_type).to eq("application/vnd.api+json")
-    #     end
-
-    #     it "throws 401 if Authorization header isn't passed" do
-    #       company = FactoryBot.create(:company)
-
-    #       post :create, params: {data: {
-    #                       attributes: {
-    #                         body: "Some random message body",
-    #                         company_id: company.id,
-    #                         user_id: user.id,
-    #                       },
-    #                     }}
-
-    #       expect(response).to have_http_status(:unauthorized)
-    #     end
-    #   end
-
-    #   context "with invalid params" do
-    #     it "renders a JSON response with errors for the new message" do
-    #       user = FactoryBot.create(:user)
-
-    #       request.headers["HTTP_AUTHORIZATION"] = authorization_header(user)
-
-    #       post :create, params: {data: invalid_attributes}
-
-    #       expect(response).to have_http_status(:unprocessable_entity)
-    #       expect(response.content_type).to eq("application/vnd.api+json")
-    #     end
-
-    #     it "throws 401 if Authorization header isn't passed" do
-    #       company = FactoryBot.create(:company)
-
-    #       post :create, params: {data: {
-    #                       attributes: {
-    #                         body: "Some random message body",
-    #                         company_id: company.id,
-    #                       },
-    #                     }}
-
-    #       expect(response).to have_http_status(:unauthorized)
-    #     end
-    #   end
+        it "throws 401 if Authorization header isn't passed" do
+          user = FactoryBot.create(:user)
+          conversation = FactoryBot.create(:conversation)
+
+          post :create, params: {data: {
+                          attributes: {
+                            body: "Some random message body",
+                            conversation_id: conversation.id,
+                            user_id: user.id,
+                          },
+                        }}
+
+          expect(response).to have_http_status(:unauthorized)
+        end
+      end
+    end
+
+    context "with invalid params" do
+      it "renders a JSON response with errors for the new message" do
+        user = FactoryBot.create(:user)
+
+        request.headers["HTTP_AUTHORIZATION"] = authorization_header(user)
+
+        post :create, params: {data: invalid_attributes}
+
+        expect(response).to have_http_status(:unprocessable_entity)
+        expect(response.content_type).to eq("application/vnd.api+json")
+      end
+
+      it "throws 401 if Authorization header isn't passed" do
+        post :create, params: {data: invalid_attributes}
+
+        expect(response).to have_http_status(:unauthorized)
+      end
+    end
   end
 end
