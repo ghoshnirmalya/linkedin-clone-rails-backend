@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :conversation do
-    sender nil
-    recipient nil
+    association :sender, factory: :user
+    association :recipient, factory: :user
   end
 end

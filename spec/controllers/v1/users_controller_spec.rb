@@ -62,6 +62,32 @@ RSpec.describe V1::UsersController, type: :controller do
       expect(response).to be_successful
     end
 
+    it "returns a link object" do
+      users = FactoryBot.create_list(:user, 100)
+
+      request.headers["HTTP_AUTHORIZATION"] = authorization_header(users.first)
+
+      get :index, {format: :json}
+
+      expect(JSON.parse(response.body)["links"]).to be_present
+    end
+
+    it "data of two pages shouldn't be same" do
+      users = FactoryBot.create_list(:user, 100)
+
+      request.headers["HTTP_AUTHORIZATION"] = authorization_header(users.first)
+
+      get :index, {format: :json, params: {page: 1}}
+
+      response_first = response
+
+      get :index, {format: :json, params: {page: 2}}
+
+      response_second = response
+
+      expect(JSON.parse(response_first.body)["links"]).to_not eq(JSON.parse(response_second.body)["links"])
+    end
+
     context "without search params" do
       it "returns a list of 10 users" do
         users = FactoryBot.create_list(:user, 100)
@@ -104,32 +130,6 @@ RSpec.describe V1::UsersController, type: :controller do
 
         expect(JSON.parse(response.body)["data"].count).to eq(0)
       end
-    end
-
-    it "returns a link object" do
-      users = FactoryBot.create_list(:user, 100)
-
-      request.headers["HTTP_AUTHORIZATION"] = authorization_header(users.first)
-
-      get :index, {format: :json}
-
-      expect(JSON.parse(response.body)["links"]).to be_present
-    end
-
-    it "data of two pages shouldn't be same" do
-      users = FactoryBot.create_list(:user, 100)
-
-      request.headers["HTTP_AUTHORIZATION"] = authorization_header(users.first)
-
-      get :index, {format: :json, params: {page: 1}}
-
-      response_first = response
-
-      get :index, {format: :json, params: {page: 2}}
-
-      response_second = response
-
-      expect(JSON.parse(response_first.body)["links"]).to_not eq(JSON.parse(response_second.body)["links"])
     end
   end
 

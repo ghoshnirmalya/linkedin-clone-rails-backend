@@ -10,7 +10,7 @@
 100.times do
   User.create(
     name: Faker::Name.name,
-    email: Faker::Internet.email,
+    email: Faker::Internet.unique.email,
     password: Faker::String.random(6),
   )
 end

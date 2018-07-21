@@ -59,6 +59,40 @@ RSpec.describe V1::CompaniesController, type: :controller do
       expect(response).to be_successful
     end
 
+    it "returns a link object" do
+      user = FactoryBot.create(:user)
+      companies = FactoryBot.create_list(:company, 100)
+
+      request.headers["HTTP_AUTHORIZATION"] = authorization_header(user)
+
+      get :index, {format: :json}
+
+      expect(JSON.parse(response.body)["links"]).to be_present
+    end
+
+    it "data of two pages shouldn't be same" do
+      user = FactoryBot.create(:user)
+      companies = FactoryBot.create_list(:company, 100)
+
+      request.headers["HTTP_AUTHORIZATION"] = authorization_header(user)
+
+      get :index, {format: :json, params: {page: 1}}
+
+      response_first = response
+
+      get :index, {format: :json, params: {page: 2}}
+
+      response_second = response
+
+      expect(JSON.parse(response_first.body)["links"]).to_not eq(JSON.parse(response_second.body)["links"])
+    end
+
+    it "throws 401 if Authorization header isn't passed" do
+      get :index, {format: :json}
+
+      expect(response).to have_http_status(:unauthorized)
+    end
+
     context "without search params" do
       it "returns a list of 10 companies" do
         user = FactoryBot.create(:user)
@@ -105,40 +139,6 @@ RSpec.describe V1::CompaniesController, type: :controller do
 
         expect(JSON.parse(response.body)["data"].count).to eq(0)
       end
-    end
-
-    it "returns a link object" do
-      user = FactoryBot.create(:user)
-      companies = FactoryBot.create_list(:company, 100)
-
-      request.headers["HTTP_AUTHORIZATION"] = authorization_header(user)
-
-      get :index, {format: :json}
-
-      expect(JSON.parse(response.body)["links"]).to be_present
-    end
-
-    it "data of two pages shouldn't be same" do
-      user = FactoryBot.create(:user)
-      companies = FactoryBot.create_list(:company, 100)
-
-      request.headers["HTTP_AUTHORIZATION"] = authorization_header(user)
-
-      get :index, {format: :json, params: {page: 1}}
-
-      response_first = response
-
-      get :index, {format: :json, params: {page: 2}}
-
-      response_second = response
-
-      expect(JSON.parse(response_first.body)["links"]).to_not eq(JSON.parse(response_second.body)["links"])
-    end
-
-    it "throws 401 if Authorization header isn't passed" do
-      get :index, {format: :json}
-
-      expect(response).to have_http_status(:unauthorized)
     end
   end
 
