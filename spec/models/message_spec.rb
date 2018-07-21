@@ -1,5 +1,9 @@
-require 'rails_helper'
+require "rails_helper"
 
 RSpec.describe Message, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+  describe Message do
+    it { is_expected.to validate_presence_of(:body) }
+    it { is_expected.to validate_presence_of(:conversation_id) }
+    it { is_expected.to validate_presence_of(:user_id) }
+  end
 end
