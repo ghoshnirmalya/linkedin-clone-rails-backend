@@ -9,6 +9,10 @@ A clone of LinkedIn software with basic functionalities.
 
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
 
+### API documentation
+
+The API documentation is available [here](https://documenter.getpostman.com/view/325212/RWMFtU4c#rate-limit).
+
 ### Prerequisites
 
 What things you need to install the software and how to install them:
