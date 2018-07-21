@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_07_17_190543) do
+ActiveRecord::Schema.define(version: 2018_07_21_155146) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -26,6 +26,15 @@ ActiveRecord::Schema.define(version: 2018_07_17_190543) do
     t.bigint "user_id", null: false
     t.index ["company_id", "user_id"], name: "index_companies_users_on_company_id_and_user_id"
     t.index ["user_id", "company_id"], name: "index_companies_users_on_user_id_and_company_id"
+  end
+
+  create_table "conversations", force: :cascade do |t|
+    t.bigint "sender_id"
+    t.bigint "recipient_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["recipient_id"], name: "index_conversations_on_recipient_id"
+    t.index ["sender_id"], name: "index_conversations_on_sender_id"
   end
 
   create_table "jobs", force: :cascade do |t|
@@ -45,5 +54,7 @@ ActiveRecord::Schema.define(version: 2018_07_17_190543) do
     t.string "password_digest"
   end
 
+  add_foreign_key "conversations", "users", column: "recipient_id"
+  add_foreign_key "conversations", "users", column: "sender_id"
   add_foreign_key "jobs", "companies"
 end

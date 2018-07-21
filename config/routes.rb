@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :conversations
   namespace :v1 do
     resources :users
     resources :companies
