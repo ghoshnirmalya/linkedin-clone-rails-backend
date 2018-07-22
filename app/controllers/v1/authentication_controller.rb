@@ -28,6 +28,10 @@ module V1
     def forgot_password
       @user = User.find_by email: params[:data][:attributes][:email]
 
+      Rails.logger.info "######"
+      Rails.logger.info @user
+      Rails.logger.info "######"
+
       new_password = Array.new(10).map { (65 + rand(58)).chr }.join
       @user.password = new_password
 

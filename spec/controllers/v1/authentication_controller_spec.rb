@@ -91,4 +91,31 @@ RSpec.describe V1::AuthenticationController, type: :controller do
       end
     end
   end
+
+  describe "#forgot_password" do
+    let(:mail) { UserMailer.welcome_email(User.last.id) }
+
+    it "sends a mail" do
+      user = FactoryBot.create(:user, email: "john@doe.com", password: "some_unique_password")
+
+      post :forgot_password, params: {data: valid_attributes}
+
+      expect(ActionMailer::Base.deliveries.count).to eq(4)
+    end
+
+    it "resets the password of the user" do
+      user = User.create! valid_attributes
+
+      post :forgot_password, params: {data: {attributes: {
+                               name: "John Doe",
+                               email: "john@doe.com",
+                               password: "some_new_password",
+                             }}}
+
+      post :sign_in, params: {data: valid_attributes}
+
+      expect(response).to_not be_successful
+      expect(response).to have_http_status(:unauthorized)
+    end
+  end
 end
