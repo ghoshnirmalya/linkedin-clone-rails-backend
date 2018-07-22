@@ -94,8 +94,10 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 - [x] Authentication
 - [x] Make APIs follow JSON-API specification
 - [x] Users Listing API
+  - [x] Search (for Users)
 - [x] Companies Listing API
+  - [x] Search (for Companies)
 - [x] Jobs Listing API
-- [x] Search (for Users)
-- [x] Search (for Companies)
-- [x] Search (for Jobs)
+  - [x] Search (for Jobs)
+- [x] Conversations Listing API
+  - [x] Messages belonging to a conversation Listing API
