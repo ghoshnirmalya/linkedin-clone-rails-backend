@@ -24,5 +24,17 @@ module V1
         render json: {error: command.errors}, status: :unauthorized
       end
     end
+
+    def forgot_password
+      @user = User.find_by email: params[:data][:attributes][:email]
+
+      new_password = Array.new(10).map { (65 + rand(58)).chr }.join
+      @user.password = new_password
+
+      if @user.save
+        mail = UserMailer.forgot_password_email(@user.id, new_password)
+        mail.deliver_now
+      end
+    end
   end
 end
