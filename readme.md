@@ -101,3 +101,5 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
   - [x] Search (for Jobs)
 - [x] Conversations Listing API
   - [x] Messages belonging to a conversation Listing API
+- [x] Send an email after a new user signs up
+- [x] Send an email after an existing user requests for a new password
