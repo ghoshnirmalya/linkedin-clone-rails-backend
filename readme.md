@@ -88,6 +88,11 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 - [An Introduction to Using JWT Authentication in Rails](https://www.sitepoint.com/introduction-to-using-jwt-in-rails/)
 - [Token-based authentication with Ruby on Rails 5 API](https://www.pluralsight.com/guides/token-based-authentication-with-ruby-on-rails-5-api)
 - [Simple approach to Rails 5 API authentication with Json Web Token](https://www.codementor.io/omedale/simple-approach-to-rails-5-api-authentication-with-json-web-token-cpqbgrdo6)
+- [Tutorial: Create a simple messaging system on Rails](https://medium.com/@danamulder/tutorial-create-a-simple-messaging-system-on-rails-d9b94b0fbca1)
+- [How to test Rails mailers using RSpec](https://www.lucascaton.com.br/2010/10/25/how-to-test-mailers-in-rails-with-rspec/)
+- [Sending emails with ActionMailer and Sidekiq](https://gist.github.com/maxivak/690e6c353f65a86a4af9)
+- [RSpec Cheatsheet](https://gist.github.com/eliotsykes/5b71277b0813fbc0df56)
+- [Factory Bot cheatsheet](https://devhints.io/factory_bot)
 
 ## Todo
 
