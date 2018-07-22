@@ -16,6 +16,9 @@ module V1
       command = AuthenticateNewUser.call(params[:data][:attributes][:email], params[:data][:attributes][:password])
 
       if command.success?
+        mail = UserMailer.welcome_email(JSON.parse(command.to_json)["user"]["id"])
+        mail.deliver_now
+
         render json: {auth_token: command.result}
       else
         render json: {error: command.errors}, status: :unauthorized
