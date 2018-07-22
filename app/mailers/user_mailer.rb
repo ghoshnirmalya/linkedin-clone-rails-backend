@@ -3,7 +3,7 @@ class UserMailer < ApplicationMailer
     @user = User.find(user_id)
 
     mail(:to => @user.email,
-         :subject => "Welcome") do |format|
+         :subject => "Getting started with " + ENV.fetch("APP_NAME")) do |format|
       format.text
       format.html
     end

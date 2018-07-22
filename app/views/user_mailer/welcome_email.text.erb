@@ -1,2 +1,18 @@
-<h1>Hi <%= @user.name %></h1>
-You got a new note!
+******************
+Welcome, <%= @user.name %>!
+******************
+
+Thanks for trying <%= ENV.fetch("APP_NAME")%>. We’re thrilled to have you on board.
+
+For reference, here's your login information:
+
+Email: <%= @user.email %>
+
+Password: *******
+
+Thanks,
+The <%= ENV.fetch("APP_NAME")%> Team
+
+© <%= Time.current.year %> <%= ENV.fetch("APP_NAME")%>. All rights reserved.
+
+<%= ENV.fetch("APP_NAME")%>
