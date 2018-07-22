@@ -42,9 +42,6 @@ RSpec.describe V1::AuthenticationController, type: :controller do
         post :sign_up, params: {data: valid_attributes}
 
         expect(ActionMailer::Base.deliveries.count).to eq(3)
-        expect(mail.subject).to eq("Getting started with LinkedIn Rails")
-        expect(mail.from).to eq([ENV.fetch("SENDGRID_DOMAIN")])
-        expect(mail.to).to eq([User.last.email])
       end
     end
 
