@@ -67,6 +67,22 @@ If you want to run a single spec, use the following pattern:
 docker exec -it linkedin-rails_linkedin.rails.web_1 rspec spec/controllers/v1/users_controller_spec.rb
 ```
 
+You'll have to update the `.env` files to make all the specs pass.
+
+## Checking the logs
+
+You can check the development logs using the following command:
+
+```
+docker exec -it linkedin-rails_linkedin.rails.web_1 tail -f log/development.log
+```
+
+If you want to check the test logs, you'll need to use the following command:
+
+```
+docker exec -it linkedin-rails_linkedin.rails.web_1 tail -f log/test.log
+```
+
 ## Built With
 
 - [Ruby on Rails](https://rubyonrails.org/) - The web framework used to build the app
