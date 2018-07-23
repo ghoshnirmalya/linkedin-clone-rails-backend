@@ -30,3 +30,21 @@ end
     company_id: Faker::Number.number(1),
   )
 end
+
+# Conversations
+50.times do |x|
+  Conversation.create(
+    sender_id: x,
+    recipient_id: x + 5,
+  )
+end
+
+# Messages
+50.times do |x|
+  Message.create(
+    body: Faker::Lorem.paragraphs,
+    read: Faker::Boolean.boolean,
+    user_id: x,
+    conversation_id: x + 5,
+  )
+end
