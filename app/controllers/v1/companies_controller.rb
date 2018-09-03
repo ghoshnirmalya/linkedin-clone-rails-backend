@@ -11,7 +11,7 @@ module V1
 
     # GET /companies/1
     def show
-      render json: @company
+      render json: @company, include: ["jobs"]
     end
 
     # POST /companies
