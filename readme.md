@@ -5,6 +5,8 @@
 
 A clone of LinkedIn software with basic functionalities.
 
+<img src="https://user-images.githubusercontent.com/6391763/46587615-a4a0fe00-caac-11e8-8cb7-13d4ddfa9c15.png" alt="Logo">
+
 ## Getting Started
 
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
