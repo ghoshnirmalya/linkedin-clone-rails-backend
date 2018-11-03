@@ -6,7 +6,7 @@ module V1
     def index
       @jobs = Job.search(params[:search]).page(params[:page])
 
-      render json: @jobs
+      render json: @jobs, include: "*"
     end
 
     # GET /jobs/1
