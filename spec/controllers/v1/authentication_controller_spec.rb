@@ -35,7 +35,7 @@ RSpec.describe V1::AuthenticationController, type: :controller do
 
         expect(response).to be_successful
         expect(response).to have_http_status(:ok)
-        expect(JSON.parse(response.body)["auth_token"]).to eq("eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoyfQ.MGDoh6fr29U1-DQo0o3myLlj3i2-fQclV9mQ1tDKIfw")
+        expect(JSON.parse(response.body)["auth_token"]).to eq("eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoyfQ.5lZzU3qtpuwO46kszzvM9IwsADJS-iABVXwgphoqCpk")
       end
 
       it "sends a mail" do
@@ -70,7 +70,7 @@ RSpec.describe V1::AuthenticationController, type: :controller do
 
         expect(response).to be_successful
         expect(response).to have_http_status(:ok)
-        expect(JSON.parse(response.body)["auth_token"]).to eq("eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjo0fQ.cdT5O1Lcg28FebC8tTO9mWxRiyaycodAO9-VrLtMY7s")
+        expect(JSON.parse(response.body)["auth_token"]).to eq("eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjo0fQ.1CEFVHaaqOCggtDLJ-H1keNv4vK0Jb5VOOTiJeoanmk")
       end
 
       it "doesn't create a new User" do
