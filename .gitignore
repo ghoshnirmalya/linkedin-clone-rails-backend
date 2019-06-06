@@ -27,5 +27,8 @@
 # Ignore .env.test
 .env.test
 
+# Ignore .env
+.env
+
 # Ignore SimpleCov reports
 coverage
