@@ -40,7 +40,7 @@ docker-compose build
 #### 3. Create the database
 
 ```
-docker-compose run linkedin.rails rake db:create
+docker-compose run linkedin.rails.web rake db:create
 ```
 
 #### 4. Copy the env files
@@ -52,7 +52,7 @@ cp .env.development.example .env.development && cp .env.test.example .env.test
 #### 5. Run the migrations
 
 ```
-docker-compose run linkedin.rails rake db:migrate
+docker-compose run linkedin.rails.web rake db:migrate
 ```
 
 Please have a look at [Quickstart: Compose and Rails](https://docs.docker.com/compose/rails/) if you run into any trouble while installing.
